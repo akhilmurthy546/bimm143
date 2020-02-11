@@ -1,0 +1,106 @@
+---
+title: "class09"
+output: html_document
+---
+
+```{r}
+# Generate some example data for clustering
+tmp <- c(rnorm(30,-3), rnorm(30,3))
+x <- cbind(x=tmp, y=rev(tmp))
+plot(x)
+```
+
+```{r}
+km <- kmeans(x, centers=2, nstart=20)
+km$cluster
+length(km)
+plot(x, col=km$cluster)
+points(km$centers, col="blue")
+```
+
+
+
+
+
+```{r}
+# Hierarchical clustering
+
+d <- dist(x)
+hc <- hclust(d)
+plot(hc)
+abline(h=6, col="red", lty=2)
+abline(h=4, col="blue")
+```
+
+
+```{r}
+cutree(hc, h=6)
+```
+
+```{r}
+cutree(hc, h=4)
+```
+
+
+
+
+
+
+
+
+```{r}
+# Step 1. Generate some example data for clustering
+x <- rbind(
+ matrix(rnorm(100, mean=0, sd = 0.3), ncol = 2), # c1
+ matrix(rnorm(100, mean = 1, sd = 0.3), ncol = 2), # c2
+ matrix(c(rnorm(50, mean = 1, sd = 0.3), # c3
+ rnorm(50, mean = 0, sd = 0.3)), ncol = 2))
+colnames(x) <- c("x", "y")
+# Step 2. Plot the data without clustering
+plot(x)
+# Step 3. Generate colors for known clusters
+# (just so we can compare to hclust results)
+col <- as.factor( rep(c("c1","c2","c3"), each=50) )
+plot(x, col=col)
+
+
+ex <- hclust(dist(x))
+plot(ex)
+cutree(ex, h=6)
+plot(ex, h=2.5)
+
+grps <- cutree(hc, k=3)
+table(grps)
+```
+
+
+```{r}
+x <- read.csv("UK_foods.csv")
+print(x)
+
+# Note how the minus indexing works
+rownames(x) <- x[,1]
+x <- x[,-1]
+head(x)
+
+barplot(as.matrix(x), beside=T, col=rainbow(nrow(x)))
+pairs(x, col=rainbow(10), pch=16)
+
+
+```
+
+
+
+```{r}
+# Use the prcomp() PCA function 
+pca <- prcomp( t(x) )
+summary(pca)
+pca
+```
+
+
+```{r}
+attributes(pca)
+plot(pca$x[,1], pca$x[,2])
+```
+

@@ -1,0 +1,29 @@
+---
+title: "Protein Plot"
+output: html_document
+---
+
+```{r}
+# This function takes input of a protein pdb id number and outputs a plot for the protein. It reads the pdb data of the protein, trims the pdb data to a subset of atoms and generates a protein plot. To use this function, it must be called with a pdb id passed in as the only argument.
+proteinPlot <- function(number) {
+  # load the bio3d library
+  library(bio3d)
+  
+  # Read a PDB file from the RCSB online database
+  s1 <- read.pdb(number)
+  
+  # trim pdb to a subset of atoms and store in s1.chainA
+  s1.chainA <- trim.pdb(s1, chain="A", elety="CA")
+  
+  # store data.frame containing atom data in s1.b
+  s1.b <- s1.chainA$atom$b
+
+  # generate protein plot
+  plotb3(s1.b, sse=s1.chainA, typ="l", ylab="Bfactor")
+}
+```
+
+```{r}
+proteinPlot("4AKE")
+```
+

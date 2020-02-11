@@ -1,0 +1,80 @@
+---
+title: "class07"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+function(x, na.rm=TRUE, plot=FALSE, ...) {
+    if(na.rm) {
+        rng <-range(x, na.rm=na.rm)
+    } else {
+        rng <-range(x)
+    }
+    answer <- (x - rng[1]) / (rng[2] - rng[1])
+    if(plot) { plot(answer, ...) }
+    
+    print("hello")
+    
+    return(answer)
+}
+
+```
+
+```{r}
+is_both_na <- function(x,y){
+  if (length(x) != length(y)){
+    stop("your inouts are not the same")
+  }
+  is.na(x) & is.na(y)
+}
+```
+
+```{r}
+x <- df1$IDs
+y <- df2$IDs
+
+intersect(x,y)
+
+x %in% y
+x
+x[x %in% y]
+
+y
+y %in% x
+y[y %in% x]
+
+cbind(x[x %in% y], y[y %in% x])
+```
+
+```{r}
+gene_intersect <- function(x,y) {
+  cbind(x[x %in% y], y[y %in% x])
+}
+
+gene_intersect2 <- function(df1,df2) {
+  cbind(df1[df1$IDs %in% df2$IDs, ], df2[df2$IDs %in% df1$IDs, ], "exp")
+}
+
+gene_intersect4 <- function(df1, df2, gene.colname = "IDs") {
+  
+  df1.name <- df1[,gene.colname]
+  df2.name <- df2[,gene.colname]
+  
+  df1.inds <- df1.name %in% df2.name
+  df2.inds <- df2.name %in% df1.name
+  cbind(df1[df1.inds,],
+        df2[df2.inds,], "exp")
+}
+
+gene_intersect4(df1, df2, gene.colname = "IDs")
+
+x <- df1$IDs
+y <- df2$IDs
+gene_intersect(x,y)
+gene_intersect2(df1,df2)
+```
+
